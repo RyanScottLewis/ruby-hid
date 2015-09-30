@@ -63,7 +63,7 @@ module RubyHid
     #
     # Initialise device, getting event file from /dev/input/by-id/
     #
-    def initialize(filename=nil, block_size=16)
+    def initialize(filename=nil, block_size=24)
       @dev = File.open(filename)
       @block_size = block_size
     rescue Errno::ENOENT => er
@@ -117,7 +117,7 @@ module RubyHid
         loop do
           event = read
           next unless ALLOWED_EVENT_TYPES.include?(event.type)
-          RubyHid::Button.trigger_key(event.code)
+          RubyHid::Button.trigger_key(event.code, event.value)
         end
       end
     end
