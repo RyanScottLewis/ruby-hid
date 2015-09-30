@@ -1,9 +1,13 @@
 require_relative '../lib/ruby_hid.rb'
+puts RubyHid::Device.list()
 
 if ARGV[0]
   name = RubyHid::Device.list(ARGV[0].to_s)[0]
 else
-  name = '/dev/input/by-id/usb-DragonRise_Inc._Generic_USB_Joystick-event-joystick'
+  name = RubyHid::Device.list('USB_Joystick')[0]
+  if name.nil?
+    name = '/dev/input/by-id/usb-DragonRise_Inc._Generic_USB_Joystick-event-joystick'
+  end
 end
 
 dev = RubyHid::Device.new(name)
