@@ -1,6 +1,13 @@
 require_relative '../lib/ruby_hid.rb'
 
-name = '/dev/input/by-id/usb-DragonRise_Inc._Generic_USB_Joystick-event-joystick'
+if ARGV[0]
+  name = RubyHid::Device.list(ARGV[0].to_s)[0]
+else
+  name = '/dev/input/by-id/usb-DragonRise_Inc._Generic_USB_Joystick-event-joystick'
+end
+
+dev = RubyHid::Device.new(name)
+
 
 RubyHid::Button.build
 
@@ -13,7 +20,6 @@ buttons.each do |code, name|
   )
 end
 
-dev = RubyHid::Device.new(name)
 dev.start_watching
 
 loop do
