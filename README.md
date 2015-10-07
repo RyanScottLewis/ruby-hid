@@ -112,6 +112,33 @@ left_x changed: 10
 left_x changed: 128
 ```
 
+move_cursor.rb
+--------------
+
+A very simple movement script with ASCII output.
+It reads the left hand stick of a joypad.
+
+```bash
+$ ruby scripts/axes.rb 
++----------------------------------------+
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|              #                         |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
+|                                        |
++----------------------------------------+
+x: 14   - y: 8
+```
 
 Using it in your code
 =====================
@@ -210,7 +237,7 @@ button.add_event(
   }
 )
 
-device.start_watching
+device.start_watching20
 
 loop do
   sleep 1
