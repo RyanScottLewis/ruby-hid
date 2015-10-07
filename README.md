@@ -1,10 +1,11 @@
 ruby-hid
 ==========
 
-A Ruby library for controlling the LEDs on buzz controllers in Linux.
+A ruby library for observing HID game controllers. Currently supports
 
-* Linux only
-* Wired buzz controllers only
+* Ubuntu Linux
+
+Currently this only handles one controller at a time.
 
 *Warning:* ruby_hid has to change some rights down in the /sys and /dev
 folders of Linux in order to access the kernel. You will be asked for
@@ -13,34 +14,103 @@ your password in order to use ruby_hid.
 Example Scripts
 ===============
 
-The scripts folder contains examples of the input and output
-functionality for the buzz controllers.
+devices.rb
+----------
 
-Turn on buzzer 1
+```bash
+$ ruby scripts/devices.rb
+```
 
-`ruby scripts/light.rb 1 on`
+This lists the devices known to ruby_hid. e.g.:
 
--------------
+```bash
+$ ruby scripts/devices.rb
+/dev/input/by-id/usb-Saitek_ST200_Stick-event-joystick
+/dev/input/by-id/usb-MY-POWER_CO._LTD._2In1_USB_Joystick-event-joystick
+```
 
-Turn off buzzer 1
+All of the other example scripts take part the device names as
+an argument. For instance:
 
-`ruby scripts/light.rb 1 off`
+```bash
+$ ruby scripts/read.rb Saitek
+$ ruby scripts/read.rb MY-POWER
+```
 
--------------
+But they can all be called without an argument, in
+this case they'll use the first one on the list.
 
-Watch the inputs
+-----------------------
 
-`ruby scripts/read.rb`
+read.rb
+-------
 
-(press ctrl+c to stop)
+```bash
+$ ruby scripts/read.rb 
+```
 
--------------
+This outputs the raw information from each event sent
+by the controller. e.g.:
 
-Pushing the buzzer lights that buzzer 
+```bash
+$ ruby scripts/read.rb 
+2015-10-07T20:01:03+01:00 type: 1 code: 288 value: 1
+2015-10-07T20:01:03+01:00 type: 1 code: 288 value: 0
+2015-10-07T20:01:04+01:00 type: 1 code: 289 value: 1
+2015-10-07T20:01:04+01:00 type: 1 code: 289 value: 0
+2015-10-07T20:01:05+01:00 type: 3 code: 16 value: -1
+2015-10-07T20:01:05+01:00 type: 3 code: 16 value: 0
+2015-10-07T20:01:07+01:00 type: 3 code: 1 value: 99
+2015-10-07T20:01:07+01:00 type: 3 code: 1 value: 85
+2015-10-07T20:01:07+01:00 type: 3 code: 1 value: 73
+2015-10-07T20:01:07+01:00 type: 3 code: 1 value: 61
+```
 
-`ruby scripts/events.rb`
+buttons.rb
+----------
 
-(press ctrl+c to stop)
+```bash
+$ ruby scripts/buttons.rb 
+```
+
+This reads the button-type events, outputting them as
+names and values. e.g.:
+
+```bash
+$ ruby scripts/buttons.rb 
+btn_1 pushed: 1
+btn_1 pushed: 0
+l1 pushed: 1
+l1 pushed: 0
+select pushed: 1
+select pushed: 0
+```
+
+axes.rb
+----------
+
+```bash
+$ ruby scripts/axes.rb 
+```
+
+This reads the axis-type events, outputting them as
+names and values. e.g.:
+
+```bash
+$ ruby scripts/axes.rb 
+left_x changed: 125
+left_x changed: 110
+left_x changed: 101
+left_x changed: 90
+left_x changed: 74
+left_x changed: 56
+left_x changed: 38
+left_x changed: 20
+left_x changed: 1
+left_x changed: 0
+left_x changed: 10
+left_x changed: 128
+```
 
 
 Using it in your code
