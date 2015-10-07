@@ -324,7 +324,7 @@ I'd love to have any complete improvements, these could include:
  
 To contribute:
 
-1. Fork www.github.com/ajfaraday/ruby_hid
+1. Fork www.github.com/ajfaraday/ruby-hid
 2. Make your changes (preferably on a named fix or feature branch)
 3. Create a pull request back to the base repo
 
