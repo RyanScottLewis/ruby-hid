@@ -59,7 +59,6 @@ module RubyHid
     def self.find(code)
       btn = @@observers.detect { |b| b.code == code }
       if btn.nil?
-        puts 'code not found: ' + code
         self.make_from_code(code)
       end
       btn
@@ -150,9 +149,24 @@ module RubyHid
     #
     def self.trigger_event(code, value=nil)
       btn = self.find(code)
-      btn.trigger_events(value)
+      if btn
+        btn.trigger_events(value)
+      else
+        puts unmapped_event_message(code)
+      end
     rescue => er
-      puts "Error in button push events: #{er.message}"
+      puts "Error in observer #{code} event: #{er.message}"
+      puts er.backtrace
+    end
+
+    def self.unmapped_event_message(code)
+      <<-TEXT
+         ==============================================================
+         #{self.class} with event code #{code} has not been mapped.
+         Please add it to #{self.class}::EVENTS with a name.
+         ==============================================================
+
+      TEXT
     end
 
   end

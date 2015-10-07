@@ -24,12 +24,10 @@ module RubyHid
     # 5 - axis (usually 0 - 255, centred on 128)
     #
     BUTTON_TYPE = 1
-    DPAD_TYPE = 3
-    AXIS_TYPE = 5
+    AXIS_TYPE = 3
 
     ALLOWED_EVENT_TYPES = [
       BUTTON_TYPE,
-      DPAD_TYPE,
       AXIS_TYPE
     ]
 
@@ -40,9 +38,9 @@ module RubyHid
     #
     def Device.list(search_term=nil)
       if search_term
-        Dir["/dev/input/by-id/*#{search_term}*event*"]
+        Dir["/dev/input/by-id/*#{search_term}*event-joystick*"]
       else
-        Dir['/dev/input/by-id/*event*']
+        Dir['/dev/input/by-id/*event-joystick*']
       end
     end
 
@@ -128,6 +126,8 @@ module RubyHid
           case event.type
             when BUTTON_TYPE
               RubyHid::Button.trigger_event(event.code, event.value)
+            when AXIS_TYPE
+              RubyHid::Axis.trigger_event(event.code, event.value)
           end
         end
       end
