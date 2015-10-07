@@ -59,7 +59,7 @@ module RubyHid
     def self.find(code)
       btn = @@observers.detect { |b| b.code == code }
       if btn.nil?
-        self.make_from_code(code)
+        btn = self.make_from_code(code)
       end
       btn
     end
@@ -162,8 +162,8 @@ module RubyHid
     def self.unmapped_event_message(code)
       <<-TEXT
          ==============================================================
-         #{self.class} with event code #{code} has not been mapped.
-         Please add it to #{self.class}::EVENTS with a name.
+         #{self} with event code #{code} has not been mapped.
+         Please add it to #{self}::EVENTS with a name.
          ==============================================================
 
       TEXT

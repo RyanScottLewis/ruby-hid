@@ -116,7 +116,7 @@ left_x changed: 128
 Using it in your code
 =====================
 
-Button events
+Button Events
 -------------
 
 Include the ruby_hid library
@@ -155,7 +155,10 @@ button.add_event(
 You can debug the actions you've added to a button with trigger_events
 
 ```ruby
+# test button down event
 button.trigger_events(1)
+# test button up event
+button.trigger_events(0)
 ```
 
 How about getting it to run when you press the button?
@@ -189,10 +192,12 @@ Note: This process will end when your ruby process ends, but if you
 want to stop it before that stage, you can call `device.stop_watching`
 
 If you want to do nothing other than watch the buttons, you may want
-to follow start_watching with an empty loop.
+to follow start_watching with an empty loop in order to keep your
+ruby process, and the the forked process which watches the controller
+alive. 
 
 ```ruby
-device = RubyHid::Device.new
+device = RubyHid::Device.new(RubyHid::Device.list[0])
 
 button = RubyHid::Button.find_by_name(:l1)
 button.add_event(
@@ -212,12 +217,69 @@ loop do
 end 
 ```
 
+Axis Events
+-----------
+
+Axes are continuous control events coming from a controller. Usually
+these are joysticks or throttles. 
+
+They differ from buttons in that they have a wider range of values,
+often the event is triggered a large number of times as the event is 
+triggered.
+ 
+They work in the same ways as buttons, only they are accessed via the 
+RubyHid::Axis class.
+
+*Note:* as the observers work on a separate process, and because axes 
+send a large number of messages it is wise to keep the events on your
+axes as small as possible, and modify a shared object.
+  
+```ruby
+require 'ostruct'
+require_relative '../lib/ruby_hid.rb'
+
+@cursor = OpenStruct.new(
+  :x => 50.0, :y => 50.0,
+  :x_speed => 0, :y_speed => 0
+)
+
+axis = RubyHid::Axis.find_by_name(:left_y)
+axis.add_event(
+  lambda do |value|
+    # value / 255 is from 0 to 1
+    @cursor.y_speed = ((value.to_f / 255.0) - 0.5)
+  end
+)
+
+axis = RubyHid::Axis.find_by_name(:left_x)
+axis.add_event(
+  lambda do |value|
+    # value / 255 is from 0 to 1
+    @cursor.x_speed = ((value.to_f / 255.0) - 0.5)
+  end
+)
+
+device = RubyHid::Device.new(RubyHid::Device.list[0])
+device.start_watching
+
+loop do
+  # Observers have set x_speed and y_speed
+  # each step increments both dimensions by it's own speed
+  @cursor.x += @cursor.x_speed
+  @cursor.y += @cursor.y_speed
+
+  puts "x: #{@cursor.x.to_i.to_s.ljust(4)} - y: #{@cursor.y.to_i}"
+  sleep 0.1
+end
+``` 
+ 
+
 Acknowledgements
 ===============
 
 This repo includes a modified version of the devinput class from
 https://github.com/kamaradclimber/libdevinput
-Which was forked from
+which was forked from
 https://github.com/prullmann/libdevinput
 
 Without that clone of libdev, written in ruby, I would not have been
