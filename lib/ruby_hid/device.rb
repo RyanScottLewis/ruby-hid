@@ -125,7 +125,10 @@ module RubyHid
         loop do
           event = read
           next unless ALLOWED_EVENT_TYPES.include?(event.type)
-          RubyHid::Button.trigger_key(event.code, event.value)
+          case event.type
+            when BUTTON_TYPE
+              RubyHid::Button.trigger_event(event.code, event.value)
+          end
         end
       end
     end
