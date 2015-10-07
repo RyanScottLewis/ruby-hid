@@ -84,7 +84,6 @@ module RubyHid
     # * name - symbol, a known button name
     #
     def self.make_from_name(name)
-      puts 'mfn'
       code = BUTTONS.detect{|code, btn_name| btn_name == name}
       if code
         self.new(code, name)
@@ -104,6 +103,7 @@ module RubyHid
     def self.find(code)
       btn = @@buttons.detect { |b| b.code == code }
       if btn.nil?
+        puts 'code not found: ' + code
         self.make_from_code(code)
       end
       btn

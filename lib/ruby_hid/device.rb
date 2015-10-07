@@ -19,10 +19,18 @@ module RubyHid
     #
     # Event types we're interested in, used to filter out meta-data.
     #
-    # 1 - button type
+    # 1 - button (0, 1)
+    # 3 - d-pad (-1, 0, 1)
+    # 5 - axis (usually 0 - 255, centred on 128)
     #
+    BUTTON_TYPE = 1
+    DPAD_TYPE = 3
+    AXIS_TYPE = 5
+
     ALLOWED_EVENT_TYPES = [
-      1
+      BUTTON_TYPE,
+      DPAD_TYPE,
+      AXIS_TYPE
     ]
 
     #
