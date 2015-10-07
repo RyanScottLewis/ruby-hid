@@ -299,7 +299,34 @@ loop do
   sleep 0.1
 end
 ``` 
+
+Helping Out
+===========
+
+Testing
+-------
+
+ruby_hid is currently in a very early beta, it has only been tested
+on Ubuntu Linux with a small number of game controllers. I'd love 
+to hear if you managed to use it, what devices you've got to work and
+if you had any difficulty using the library.
+
+Contact me on @MarmiteJunction or andrewfaraday@hotmail.co.uk
+
+Contributing
+------------
+
+I'd love to have any complete improvements, these could include:
+
+* Support for other Linux distros, or Max OS
+* Bug fixes
+* Mappings for buttons or axes on other devices 
  
+To contribute:
+
+1. Fork www.github.com/ajfaraday/ruby_hid
+2. Make your changes (preferably on a named fix or feature branch)
+3. Create a pull request back to the base repo
 
 Acknowledgements
 ===============
