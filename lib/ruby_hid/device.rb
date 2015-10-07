@@ -1,3 +1,7 @@
+class NoFileSpecifiedError < RuntimeError
+
+end
+
 module RubyHid
   #
   # The main interface for the Buzz controllers. Primarily
@@ -70,9 +74,10 @@ module RubyHid
     # Initialise device, getting event file from /dev/input/by-id/
     #
     def initialize(filename=nil, block_size=24)
+      raise NoFileSpecifiedError if filename.nil?
       @dev = File.open(filename)
       @block_size = block_size
-    rescue Errno::ENOENT => er
+    rescue NoFileSpecifiedError, Errno::ENOENT => er
       puts "Could not find device: are your controllers plugged in?"
       raise er
     end
