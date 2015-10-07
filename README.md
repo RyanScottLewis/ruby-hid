@@ -123,30 +123,31 @@ Include the ruby_hid library
 
 `require 'ruby_hid'`
 
-The Buzz controller has 4 pads, each of which has four buttons named:
- 
- * buzz
- * blue
- * orange
- * green
- * yellow
+Buttons are binary controls, events on button changes can
+have one of two values:
 
-They can be found like this:
+* 1 - button down
+* 0 - button up
+
+You can find buttons with the RubyHid::Button class. Find
+the names or codeds in the EVENTS hash.
 
 ```ruby
-RubyHid::Pad[0]
-RubyHid::Pad[0].buttons
-RubyHid::Pad[0].buttons[:buzz]
-RubyHid::Pad.all
+RubyHid::Button.find(297)
+RubyHid::Button.find_by_name(:l1)
 ```
 
-You can define a block of code to be run by a given button like this:
+And define an event to be run 
 
 ```ruby
-RubyHid::Pad[0].add_event(
-  :buzz,
-  lambda {
-    puts "Player 1 buzzed!"
+button = RubyHid::Button.find_by_name(:l1)
+button.add_event(
+  lambda {|value|
+    if value == 1
+      puts "You pushed L1"
+    else
+      puts "Lou released L1"
+    end 
   }
 )
 ```
@@ -154,7 +155,7 @@ RubyHid::Pad[0].add_event(
 You can debug the actions you've added to a button with trigger_events
 
 ```ruby
-RubyHid::Pad[0].trigger_events
+button.trigger_events(1)
 ```
 
 How about getting it to run when you press the button?
@@ -169,9 +170,18 @@ to the buttons, with start_watching.
 
 ```ruby
 device = RubyHid::Device.new
-RubyHid::Pad.all.each do |pad|
-  pad.add_event(:buzz, lambda { puts "Buzz!" }
+
+button = RubyHid::Button.find_by_name(:l1)
+button.add_event(
+  lambda {|value|
+    if value == 1
+      puts "You pushed L1"
+    else
+      puts "You released L1"
+    end 
+  }
 )
+
 device.start_watching
 ```
 
@@ -183,13 +193,22 @@ to follow start_watching with an empty loop.
 
 ```ruby
 device = RubyHid::Device.new
-RubyHid::Pad.all.each do |pad|
-  pad.add_event(:buzz, lambda { puts "Buzz!" }
+
+button = RubyHid::Button.find_by_name(:l1)
+button.add_event(
+  lambda {|value|
+    if value == 1
+      puts "You pushed L1"
+    else
+      puts "You released L1"
+    end 
+  }
 )
+
 device.start_watching
 
 loop do
-
+  sleep 1
 end 
 ```
 
@@ -200,3 +219,6 @@ This repo includes a modified version of the devinput class from
 https://github.com/kamaradclimber/libdevinput
 Which was forked from
 https://github.com/prullmann/libdevinput
+
+Without that clone of libdev, written in ruby, I would not have been
+able to 
