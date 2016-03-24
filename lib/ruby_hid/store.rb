@@ -17,7 +17,12 @@ module RubyHid
           value
         else # it's an axis
           range = Store.value_range(key)
-          (value - range.min).to_f / range.size
+          if range.respond_to?(:size)
+            size = range.size
+          else
+            size = (range.max - range.min).abs + 1
+          end
+          (value - range.min).to_f / size
         end
       else
         0
@@ -62,7 +67,7 @@ module RubyHid
         control = Axis.find_by_name(name)
         control ||= Button.find_by_name(name)
         control.add_event(
-          lambda {|val| store.send("#{name}=", val)}
+          lambda { |val| store.send("#{name}=", val) }
         )
       end
     end
