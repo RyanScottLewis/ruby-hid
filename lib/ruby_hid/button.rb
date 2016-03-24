@@ -45,4 +45,5 @@ module RubyHid
     end
 
   end
+
 end

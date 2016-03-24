@@ -1,4 +1,4 @@
-ruby-hid
+ruby_hid
 ==========
 
 A ruby library for observing HID game controllers. Currently supports
@@ -263,7 +263,6 @@ axes as small as possible, and modify a shared object.
   
 ```ruby
 require 'ostruct'
-require_relative '../lib/ruby_hid.rb'
 
 @cursor = OpenStruct.new(
   :x => 50.0, :y => 50.0,
@@ -299,6 +298,26 @@ loop do
   sleep 0.1
 end
 ``` 
+
+The ruby_hid Store
+-----------------
+
+Don't want to worry about setting up all those observers? The ruby_hid store
+is an object which, once initialised, holds all of the values from the first
+controller found.
+
+This is ruby_hid with all the difficulty taken out.
+
+```ruby
+require 'ruby_hid'
+
+store = RubyHid::Store.new
+
+loop do
+  puts store.to_h
+  sleep 0.1
+end
+```
 
 Helping Out
 ===========
