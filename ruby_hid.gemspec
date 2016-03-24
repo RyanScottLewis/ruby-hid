@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'ruby_hid'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2016-03-24'
   s.summary     = 'HID game controller support for Ruby in Linux'
   s.description = 'HID device observer library for Ruby applications. Currently only ubuntu Linux distributions.'
