@@ -319,6 +319,43 @@ loop do
 end
 ```
 
+You can access specific named attribute of the store like so:
+
+```ruby
+store.left_x
+store.left_y
+store.dpad_x
+store.dpad_y
+store.btn_1
+```
+
+This returns raw values, as they are returned by the controller.
+
+You can also access the controller values in a normalised form,
+where all values range from 0 to 1.
+
+
+```ruby
+require 'ruby_hid'
+
+store = RubyHid::Store.new
+
+loop do
+  puts store.normalised_hash
+  sleep 0.1
+end
+```
+
+You can access specific normalised attribute of the store like so:
+
+```ruby
+store.normalise(:left_x)
+store.normalise(:left_y)
+store.normalise(:dpad_x)
+store.normalise(:dpad_y)
+store.normalise(:btn_1)
+```
+
 Helping Out
 ===========
 
