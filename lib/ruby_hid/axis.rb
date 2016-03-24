@@ -32,6 +32,8 @@ module RubyHid
       17 => :dpad_y
     }
 
+    DPAD_KEYS = [:dpad_x, :dpad_y]
+
     #
     # Quick summary of the button
     #

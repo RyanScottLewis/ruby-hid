@@ -10,6 +10,41 @@ module RubyHid
       init_device
     end
 
+    def normalise(key)
+      value = @table[key]
+      if value
+        if Store.is_button?(key)
+          value
+        else # it's an axis
+          range = Store.value_range(key)
+          (value - range.min).to_f / range.size
+        end
+      else
+        0
+      end
+    end
+
+    def normalised_hash
+      @table.keys.inject({}) do |result, key|
+        result[key] = normalise(key)
+        result
+      end
+    end
+
+    private
+
+    def self.value_range(key)
+      if Axis::DPAD_KEYS.include?(key)
+        -1...1
+      else
+        0...255
+      end
+    end
+
+    def self.is_button?(key)
+      Button::EVENTS.values.include?(key)
+    end
+
     def init_device
       if device.nil?
         self.device = Device.new(
