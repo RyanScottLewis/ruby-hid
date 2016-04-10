@@ -7,9 +7,15 @@ A ruby library for observing HID game controllers. Currently supports
 
 Currently this only handles one controller at a time.
 
-*Warning:* ruby_hid has to change some rights down in the /sys and /dev
-folders of Linux in order to access the kernel. You will be asked for
-your password in order to use ruby_hid.
+*Warning:* in the event of any rights issues, ruby_hid may have to 
+change some rights down in the /sys and /dev folders. If you have a
+rights issue run:
+
+```ruby
+RubyHid::Device.force_rights
+```
+
+Then provide a sudo-able password.
 
 Example Scripts
 ===============

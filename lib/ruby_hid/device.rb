@@ -34,6 +34,11 @@ module RubyHid
       AXIS_TYPE
     ]
 
+    def force_rights
+      `sudo chmod 777 /sys/class/leds/*/brightness`
+      `sudo chmod 777 /dev/input/event*`
+    end 
+
     #
     # List possible devices from /dev/input/by-id/
     #
