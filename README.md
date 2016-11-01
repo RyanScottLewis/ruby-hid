@@ -17,6 +17,13 @@ RubyHid::Device.force_rights
 
 Then provide a sudo-able password.
 
+TODO
+====
+
+* Check/test Arch Linux support
+* OS X Support
+* Emulate HID
+
 Example Scripts
 ===============
 
